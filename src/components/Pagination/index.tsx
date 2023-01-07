@@ -1,14 +1,16 @@
 import { connect } from "react-redux/es/exports";
 
 type PaginationProps = {
+    pageId?: string | undefined,
     currentPage: number
 }
 
-const Pagination = ({currentPage}: PaginationProps) => {
+const Pagination = ({pageId, currentPage}: PaginationProps) => {
+
     return (
         <div>
             <button>Previous</button>
-            {currentPage}
+            {pageId}
             <button>Next</button>
         </div>
     )

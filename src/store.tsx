@@ -2,6 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
     currentPage: 1,
+    perPage: 6,
+    total: 12,
+    totalPages: 2,
     data: [
     {
     "id": 1,

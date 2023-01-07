@@ -3,14 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { Colors } from '../../types'
 
 type ListProps  = {
+    pageId?: string | undefined,
+    colorId?: string | undefined,
     currentPage: number,
     data: Colors
 }
 
-const List = ({ currentPage, data }: ListProps) => {
-
-
-
+const List = ({ colorId, data }: ListProps) => {
     return (
         <div>
             {data.map((item: any) => (
@@ -20,6 +19,12 @@ const List = ({ currentPage, data }: ListProps) => {
                     YEAR: {item.year}
                 </div>
             ))}
+            {colorId && (
+                <div>
+                    Modal
+                    {colorId}
+                </div>
+            )}
         </div>
     )
 }
