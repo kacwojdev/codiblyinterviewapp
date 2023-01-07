@@ -8,7 +8,8 @@ import {
     SearchBarContainer,
     SearchBarForm,
     SearchButton,
-    SearchInput
+    SearchInput,
+    CompanyName
 } from './style'
 
 const SearchBar = () => {
@@ -26,12 +27,14 @@ const SearchBar = () => {
 
     return (
         <SearchBarContainer>
-            <h1>Codibly Interview Task</h1>
+            <h1>
+                <CompanyName>Codibly </CompanyName> 
+                <span>Interview Task</span>
+            </h1>
             <SearchBarForm onSubmit={handleFormSubmit}>
                 <SearchInput type="number" name="number" placeholder="search by id ..."></SearchInput>
                 <SearchButton type="submit">
-                    Search
-                    <FontAwesomeIcon style={{ marginLeft: '10px'}} icon={faMagnifyingGlass} />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </SearchButton>
             </SearchBarForm>
         </SearchBarContainer>

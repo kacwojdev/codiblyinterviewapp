@@ -5,15 +5,16 @@ import {
 } from "react-router-dom";
 import { useParams } from "react-router";
 
-import Pagination from "./components/Pagination";
 import SearchBar from "./components/SearchBar";
 import List from "./components/List";
 import NotFound from "./components/NotFound";
+import Footer from './components/Footer'
 
+import { AppContainer } from './style'
 
 const App = () => {
   return (
-    <div className="App">
+    <AppContainer>
       <Router basename="/">
         <Routes>
           <Route path="/" element={<Layout />} />
@@ -22,7 +23,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </div>
+    </AppContainer>
   );
 }
 
@@ -35,7 +36,7 @@ const Layout = () => {
     <>
       <SearchBar />
       <List pageId={pageId} colorId={colorId} />
-      <Pagination pageId={pageId} />
+      <Footer />
     </>
   )
 }

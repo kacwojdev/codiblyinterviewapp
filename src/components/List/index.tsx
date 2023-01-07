@@ -1,6 +1,14 @@
+import ListItem from '../ListItem'
+
 import { connect } from "react-redux/es/exports";
+import { useParams } from "react-router";
 import { v4 as uuidv4 } from 'uuid';
 import { Colors } from '../../types'
+
+import {
+    ListContainer
+} from './style'
+import Pagination from '../Pagination';
 
 type ListProps  = {
     pageId?: string | undefined,
@@ -10,22 +18,26 @@ type ListProps  = {
 }
 
 const List = ({ colorId, data }: ListProps) => {
+
+    const { pageId } = useParams<"pageId">()
+
     return (
-        <div>
-            {data.map((item: any) => (
-                <div key={uuidv4()}>
-                    ID: {item.id}
-                    NAME: {item.name}
-                    YEAR: {item.year}
-                </div>
-            ))}
+        <ListContainer>
+            {data.map((item: any) => <ListItem 
+                                        key={uuidv4()}
+                                        id={item.id}
+                                        name={item.name}
+                                        year={item.year}
+                                        color={item.color}
+                                    />)}
             {colorId && (
                 <div>
                     Modal
                     {colorId}
                 </div>
             )}
-        </div>
+            <Pagination pageId={pageId} />
+        </ListContainer>
     )
 }
 
