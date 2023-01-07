@@ -1,6 +1,16 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+
+import {
+    SearchBarContainer,
+    SearchBarForm,
+    SearchButton,
+    SearchInput
+} from './style'
+
 const SearchBar = () => {
 
     const [searchId, setSearchId] = useState<number | null>(null)
@@ -15,13 +25,16 @@ const SearchBar = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleFormSubmit}>
-                <label>Search</label>
-                <input type="number" name="number" placeholder="search by id ..."></input>
-                <button type="submit">Search</button>
-            </form>
-        </div>
+        <SearchBarContainer>
+            <h1>Codibly Interview Task</h1>
+            <SearchBarForm onSubmit={handleFormSubmit}>
+                <SearchInput type="number" name="number" placeholder="search by id ..."></SearchInput>
+                <SearchButton type="submit">
+                    Search
+                    <FontAwesomeIcon style={{ marginLeft: '10px'}} icon={faMagnifyingGlass} />
+                </SearchButton>
+            </SearchBarForm>
+        </SearchBarContainer>
     )
 }
 
