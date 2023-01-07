@@ -1,10 +1,15 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { Route, Routes } from 'react-router-dom'
+import { 
+  BrowserRouter as Router, 
+  Route, 
+  Routes  
+} from "react-router-dom";
+import { useParams } from "react-router";
 
 import Pagination from "./components/Pagination";
 import SearchBar from "./components/SearchBar";
 import List from "./components/List";
-import { useParams } from "react-router";
+import NotFound from "./components/NotFound";
+
 
 const App = () => {
   return (
@@ -14,7 +19,7 @@ const App = () => {
           <Route path="/" element={<Layout />} />
           <Route path="/page/:pageId" element={<Layout />} />
           <Route path="/page/:pageId/:colorId" element={<Layout />} />
-          <Route path="/*" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
@@ -32,14 +37,6 @@ const Layout = () => {
       <List pageId={pageId} colorId={colorId} />
       <Pagination pageId={pageId} />
     </>
-  )
-}
-
-const NotFound = () => {
-  return (
-    <div>
-      404 Not Found Page
-    </div>
   )
 }
 
