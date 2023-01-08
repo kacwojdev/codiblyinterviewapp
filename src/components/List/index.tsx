@@ -50,18 +50,20 @@ const List = ({ colorId, data }: ListProps) => {
                 )}
             {colorId && (
                 <>
-                    <ModalContainer>
-                        {data
-                            .filter(item => item.id === Number(colorId))
-                            .map(item => <ModalContent
+                    {data
+                        .filter(item => item.id === Number(colorId))
+                        .map(item => (
+                            <ModalContainer bgColor={item.color}>
+                                <ModalContent
                                             id={item.id}
                                             name={item.name}
                                             year={item.year}
                                             color={item.color}
                                             pantoneValue={item.pantone_value} 
                                             />
-                        )}
-                    </ModalContainer>
+                            </ModalContainer>
+                        )
+                    )}
                     <ModalContainerBackground/>
                 </>
             )}

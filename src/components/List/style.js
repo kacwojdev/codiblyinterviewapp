@@ -29,7 +29,7 @@ export const ModalContainer = styled.div`
     z-index: 2;
     padding: 2rem;
     border-radius: 15px;
-    background-color: #92deff;
+    background-color: ${props => props.bgColor};
     color: white;
     box-shadow: 0 0 20px 10px rgb(0 0 0 / 16%);
     display: flex;
