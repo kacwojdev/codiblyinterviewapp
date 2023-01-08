@@ -4,11 +4,21 @@ export const SearchBarContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     width: 100%;
+    margin-top: 1rem;
+
+    & > h1 {
+        margin: 0;
+    }
 
     @media (max-width: 780px) {
         flex-direction: column;
+
+        & > h1 {
+            font-size: 1.7rem;
+            margin: 1rem auto;
+        }
     }
 `
 

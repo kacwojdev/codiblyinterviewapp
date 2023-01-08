@@ -32,8 +32,14 @@ const SearchBar = () => {
                 <span>Interview Task</span>
             </h1>
             <SearchBarForm onSubmit={handleFormSubmit}>
-                <SearchInput type="number" name="number" placeholder="search by id ..."></SearchInput>
-                <SearchButton type="submit">
+                <SearchInput 
+                    type="number"
+                    name="number"
+                    placeholder="search by id ..."
+                />
+                <SearchButton 
+                    type="submit"
+                >
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </SearchButton>
             </SearchBarForm>

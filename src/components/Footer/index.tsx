@@ -3,7 +3,7 @@ import { FooterContainer } from './style'
 const Footer = () => (
     <FooterContainer>
         <span>App made for Codibly interview task.</span>
-        <span>Kacper Wojnowski &copy; 2022</span>
+        <span><a href="https://github.com/kacwojdev">Kacper Wojnowski</a> &copy; 2022</span>
     </FooterContainer>
 )
 

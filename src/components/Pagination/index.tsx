@@ -17,17 +17,22 @@ type PaginationProps = {
 }
 
 const Pagination = ({pageId, currentPage}: PaginationProps) => {
-
     return (
         <PaginationContainer>
             <PaginationButton>
-                <FontAwesomeIcon style={{ marginRight: '10px' }} icon={faArrowLeft} />
+                <FontAwesomeIcon 
+                    style={{ marginRight: '10px' }}
+                    icon={faArrowLeft}
+                />
                 Previous
             </PaginationButton>
             {pageId}
             <PaginationButton>
                 Next
-                <FontAwesomeIcon style={{ marginLeft: '10px' }} icon={faArrowRight} />
+                <FontAwesomeIcon 
+                    style={{ marginLeft: '10px' }}
+                    icon={faArrowRight}
+                />
             </PaginationButton>
         </PaginationContainer>
     )

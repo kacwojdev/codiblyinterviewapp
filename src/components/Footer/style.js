@@ -6,5 +6,5 @@ export const FooterContainer = styled.footer`
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    font-size: .6rem;
+    font-size: .8rem;
 `

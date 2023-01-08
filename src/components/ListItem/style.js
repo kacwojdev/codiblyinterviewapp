@@ -10,6 +10,7 @@ export const ListItemContainer = styled.div`
     border-radius: 5px;
     color: white;
     background: ${props => props.bgColor};
+    cursor: pointer;
 `
 
 export const ColorName = styled.span`
