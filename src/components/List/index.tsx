@@ -1,9 +1,14 @@
 import ListItem from '../ListItem'
 
+import { useState, useEffect } from 'react'
 import { connect } from "react-redux/es/exports";
 import { useParams } from "react-router";
 import { v4 as uuidv4 } from 'uuid';
-import { Colors } from '../../types'
+import { Color } from '../../types'
+import { 
+    AppState,
+    fetchData
+} from '../../store';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -18,13 +23,6 @@ import {
 } from './style'
 import Pagination from '../Pagination';
 
-type ListProps  = {
-    pageId?: string | undefined,
-    colorId?: string | undefined,
-    currentPage: number,
-    data: Colors
-}
-
 type ModalContentProps = {
     id: number,
     name: string,
@@ -33,22 +31,32 @@ type ModalContentProps = {
     pantoneValue: string
 }
 
-const List = ({ colorId, data }: ListProps) => {
+type ListProps = {
+    service: AppState
+}
 
-    const { pageId } = useParams<"pageId">()
+const List = ({ service, updateData, currentPage }: any) => {
+
+    useEffect(() => {
+        updateData(currentPage)
+    }, [])
 
     return (
-        <ListContainer>
-            {data
-                .map((item: any) => <ListItem 
-                                        key={uuidv4()}
-                                        id={item.id}
-                                        name={item.name}
-                                        year={item.year}
-                                        color={item.color}
-                                    />
-                )}
-            {colorId && (
+        <ListContainer rows={service.status === 'loaded' ? service.payload.data.length : 6}>
+            {service.status === 'loading' && <div>Loading ...</div>}
+            {service.status === 'loaded' &&
+                service.payload.data.map((item: any) => (
+                    <ListItem 
+                        key={uuidv4()}
+                        id={item.id}
+                        name={item.name}
+                        year={item.year}
+                        color={item.color}
+                    />
+                ))
+            }
+            {service.status === 'error' && <div>Error, backend moved to the dark side.</div>}
+            {/* {colorId && (
                 <>
                     {data
                         .filter(item => item.id === Number(colorId))
@@ -66,8 +74,8 @@ const List = ({ colorId, data }: ListProps) => {
                     )}
                     <ModalContainerBackground/>
                 </>
-            )}
-            <Pagination pageId={pageId} />
+            )} */}
+            <Pagination />
         </ListContainer>
     )
 }
@@ -99,9 +107,16 @@ const ModalContent = ({ id, name, color, year, pantoneValue }: ModalContentProps
     )
 }
 
-const mapStateToProps = (state: {currentPage: number, data: Colors}) => ({
-    currentPage: state.currentPage,
-    data: state.data
+const mapStateToProps = (state: AppState) => ({
+    service: state.result,
+    currentPage: state.currentPage
 })
 
-export default connect(mapStateToProps)(List);
+const mapDispatchToProps = (dispatch: any) => ({
+    updateData: (page: number) => fetchData(dispatch, page)
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(List);

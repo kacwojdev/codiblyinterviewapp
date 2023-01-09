@@ -11,6 +11,7 @@ import NotFound from "./components/NotFound";
 import Footer from './components/Footer'
 
 import { AppContainer } from './style'
+import { useState } from "react";
 
 const App = () => {
   return (
@@ -18,8 +19,8 @@ const App = () => {
       <Router basename="/">
         <Routes>
           <Route path="/" element={<Layout />} />
-          <Route path="/page/:pageId" element={<Layout />} />
-          <Route path="/page/:pageId/:colorId" element={<Layout />} />
+          <Route path="/:colorId" element={<Layout />} />
+          <Route path="/color/:colorId" element={<Layout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
@@ -28,14 +29,10 @@ const App = () => {
 }
 
 const Layout = () => { 
-
-  const { pageId } = useParams<"pageId">()
-  const { colorId } = useParams<"colorId">()
-
   return(
     <>
       <SearchBar />
-      <List pageId={pageId} colorId={colorId} />
+      <List />
       <Footer />
     </>
   )
