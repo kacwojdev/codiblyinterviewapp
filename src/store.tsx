@@ -23,20 +23,17 @@ export const fetchData = (dispatch: any, page: number) => {
 }
 
 export const fetchIdData = (dispatch: any, colorId: number) => {
-    console.log('in feetching id')
     fetch(`https://reqres.in/api/products?id=${colorId}`)
         .then(response => {
             if (response.ok) {
                 return response.json()
             }
-            console.log(response)
             throw Error('notfound', { cause: response })
         })
         .then(response => {
             dispatch({ type: 'FILTER_RESULT', payload: { status: 'filtered', payload: response }})
         })
         .catch(error => {
-            console.log(`error${error.message}`)
             dispatch({ type: 'FILTER_RESULT', payload: { status: `error${error.message}`, error }})
         })
 }

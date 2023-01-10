@@ -12,13 +12,20 @@ import {
     SearchInput,
     CompanyName
 } from './style'
+
 import { 
     AppState,
     fetchData, 
     fetchIdData 
 } from "../../store"
 
-const SearchBar = ({currentPage, updateData, filterData}: any) => {
+type SearchBarProps = {
+    currentPage: number
+    updateData: (pageId: number) => any
+    filterData: (colorId: number) => any
+}
+
+const SearchBar = ({currentPage, updateData, filterData}: SearchBarProps) => {
 
     const navigate = useNavigate()
 
@@ -27,7 +34,7 @@ const SearchBar = ({currentPage, updateData, filterData}: any) => {
         const target = event.target as typeof event.target & {
             number: { value: string }
         }
-        const id = target.number.value
+        const id = Number(target.number.value)
 
         if (id) {
             navigate(`/${currentPage}/search/${id}`, {replace: true, })

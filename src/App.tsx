@@ -3,7 +3,6 @@ import {
   Route, 
   Routes  
 } from "react-router-dom";
-import { useParams } from "react-router";
 
 import SearchBar from "./components/SearchBar";
 import List from "./components/List";
@@ -11,7 +10,6 @@ import NotFound from "./components/NotFound";
 import Footer from './components/Footer'
 
 import { AppContainer } from './style'
-import { useState } from "react";
 
 const App = () => {
   return (

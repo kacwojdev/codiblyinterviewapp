@@ -1,8 +1,22 @@
+import { Link } from "react-router-dom"
+
+import {
+    NotFoundContainer
+} from './style'
+
+import SearchBar from "../SearchBar"
+import Footer from "../Footer"
+
 const NotFound = () => {
     return (
-        <div>
-            404 Not Found Page
-        </div>
+        <>
+            <SearchBar />
+            <NotFoundContainer>
+                404 Not Found Page
+                <Link to="/">/ Go Home</Link>
+            </NotFoundContainer>
+            <Footer />
+        </>
     )
 }
 

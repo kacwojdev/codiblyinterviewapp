@@ -1,8 +1,10 @@
 import ListItem from '../ListItem'
+import Pagination from '../Pagination';
 
 import { useEffect } from 'react'
 import { connect } from "react-redux/es/exports";
 import { useNavigate, useParams } from "react-router";
+import { Link } from 'react-router-dom';
 import { 
     AppState,
     fetchData,
@@ -28,8 +30,6 @@ import {
     LoadingContainer,
     SpinnerContainer
 } from './style'
-import Pagination from '../Pagination';
-import { Link } from 'react-router-dom';
 
 type ModalContentProps = {
     id: number,
@@ -41,10 +41,14 @@ type ModalContentProps = {
 }
 
 type ListProps = {
-    service: AppState,
+    service: AppState | any,
+    updateData: (pageId: number) => any
+    filterData: (colorId: number) => any
+    updatePage: (pageId: number) => any
+    currentPage: number
 }
 
-const List = ({ service, updateData, filterData, updatePage, currentPage }: any) => {
+const List = ({ service, updateData, filterData, updatePage, currentPage }: ListProps) => {
 
     const { colorId } = useParams<'colorId'>()
     const { modalColorId } = useParams<'modalColorId'>()
