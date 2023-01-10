@@ -11,6 +11,10 @@ export const ListItemContainer = styled.div`
     color: white;
     background: ${props => props.bgColor};
     cursor: pointer;
+
+    & > span {
+        pointer-events: none;
+    }
 `
 
 export const ColorName = styled.span`

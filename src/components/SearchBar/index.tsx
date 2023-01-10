@@ -1,5 +1,6 @@
-import React, { useState } from "react"
 import { useNavigate } from "react-router"
+import { Link } from "react-router-dom";
+import { connect } from "react-redux/es/exports";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -11,10 +12,15 @@ import {
     SearchInput,
     CompanyName
 } from './style'
+import { 
+    AppState,
+    fetchData, 
+    fetchIdData 
+} from "../../store"
 
-const SearchBar = () => {
+const SearchBar = ({currentPage, updateData, filterData}: any) => {
 
-    const [searchId, setSearchId] = useState<number | null>(null)
+    const navigate = useNavigate()
 
     const handleFormSubmit = (event: React.SyntheticEvent): void => {
         event.preventDefault()
@@ -22,15 +28,25 @@ const SearchBar = () => {
             number: { value: string }
         }
         const id = target.number.value
-        setSearchId(Number(id))
+
+        if (id) {
+            navigate(`/${currentPage}/search/${id}`, {replace: true, })
+            filterData(id)
+        } else {
+            navigate(`/`, { replace: true })
+            updateData(1)
+        }
+        
     }
 
     return (
         <SearchBarContainer>
-            <h1>
-                <CompanyName>Codibly </CompanyName> 
-                <span>Interview Task</span>
-            </h1>
+                <h1>
+                    <Link reloadDocument style={{ textDecoration: 'none', color: 'black'}} to="/">
+                        <CompanyName>Codibly </CompanyName> 
+                        <span>Interview Task</span>
+                    </Link>
+                </h1>
             <SearchBarForm onSubmit={handleFormSubmit}>
                 <SearchInput 
                     type="number"
@@ -47,4 +63,16 @@ const SearchBar = () => {
     )
 }
 
-export default SearchBar
+const mapStateToProps = (state: AppState) => ({
+    currentPage: state.currentPage
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+    filterData: (colorId: number) => fetchIdData(dispatch, colorId),
+    updateData: (page: number) => fetchData( dispatch, page ),
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SearchBar)

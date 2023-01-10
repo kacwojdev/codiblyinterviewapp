@@ -1,5 +1,6 @@
 import { faLevelDown } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components'
+import {keyframes} from 'styled-components'
 
 export const ListContainer = styled.div`
     display: grid;
@@ -62,4 +63,36 @@ export const ModalItemSpecificContainer = styled.div`
         font-size: 1rem;
         font-weight: 700;
     }
+`
+
+export const ErrorContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+`
+
+export const LoadingContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+`
+
+const loadingAnimation = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+`
+
+export const SpinnerContainer = styled.div`
+    animation: ${loadingAnimation} 2s linear infinite;
 `

@@ -11,9 +11,10 @@ type ListItemProps = {
     year: number,
     id: number,
     color: string
+    onClick: any
 }
 
-const ListItem = ({ id, name, year, color }: ListItemProps) => {
+const ListItem = ({ id, name, year, color, onClick }: ListItemProps) => {
 
     const onEnter = ({ currentTarget }: any): void => {
         gsap.to(currentTarget, {scale: 1.025})
@@ -24,7 +25,7 @@ const ListItem = ({ id, name, year, color }: ListItemProps) => {
     }
 
     return (
-        <ListItemContainer onMouseEnter={onEnter} onMouseLeave={onLeave} bgColor={color}>
+        <ListItemContainer data-color-id={id} onMouseEnter={onEnter} onMouseLeave={onLeave} onClick={onClick} bgColor={color}>
             <span>{ id }</span>
             <ColorName>{ name }</ColorName>
             <span>{ year }</span>

@@ -33,12 +33,14 @@ const Pagination = ({updatePage, updateData, currentPage, maxPages}: PaginationP
         const nextPageNumber = Number(currentPage + 1)
         updatePage(nextPageNumber)
         updateData(nextPageNumber)
+        navigate(`/${nextPageNumber}`, {replace: true})
     }
 
     const onPrevPage = () => {
         const prevPageNumber = Number(currentPage - 1)
         updatePage(prevPageNumber)
         updateData(prevPageNumber)
+        navigate(`/${prevPageNumber}`, {replace: true})
     }
 
     return (

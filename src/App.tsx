@@ -19,11 +19,12 @@ const App = () => {
       <Router basename="/">
         <Routes>
           <Route path="/" element={<Layout />} />
-          <Route path="/:colorId" element={<Layout />} />
-          <Route path="/color/:colorId" element={<Layout />} />
+          <Route path="/:pageId" element={<Layout />} />
+          <Route path="/:pageId/search/:colorId" element={<Layout />} />
+          <Route path="/:pageId/color/:modalColorId" element={<Layout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </Router>
+      </Router>  
     </AppContainer>
   );
 }

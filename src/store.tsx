@@ -8,13 +8,37 @@ export type AppState = {
 
 export const fetchData = (dispatch: any, page: number) => {
     fetch(`https://reqres.in/api/products?per_page=5&page=${page}`)
-            .then(response => response.json())
-            .then(response => {
-                dispatch({type: 'UPDATE_RESULT', payload: { status: 'loaded', payload: response }})
-            })
-            .catch(error => {
-                dispatch({type: 'UPDATE_RESULT', payload: { status: 'error', error }})
-            })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            throw Error('notfound', { cause: response })
+        })
+        .then(response => {
+            dispatch({type: 'UPDATE_RESULT', payload: { status: 'loaded', payload: response }})
+        })
+        .catch(error => {
+            dispatch({type: 'UPDATE_RESULT', payload: { status: 'error', error }})
+        })
+}
+
+export const fetchIdData = (dispatch: any, colorId: number) => {
+    console.log('in feetching id')
+    fetch(`https://reqres.in/api/products?id=${colorId}`)
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            console.log(response)
+            throw Error('notfound', { cause: response })
+        })
+        .then(response => {
+            dispatch({ type: 'FILTER_RESULT', payload: { status: 'filtered', payload: response }})
+        })
+        .catch(error => {
+            console.log(`error${error.message}`)
+            dispatch({ type: 'FILTER_RESULT', payload: { status: `error${error.message}`, error }})
+        })
 }
 
 const reducer = (state: any, action: any) => {
@@ -23,13 +47,15 @@ const reducer = (state: any, action: any) => {
             return { currentPage: action.page, result: state.result }
         case 'UPDATE_RESULT':
             return { currentPage: state.currentPage, result: action.payload }
+        case 'FILTER_RESULT':
+            return { currentPage: state.currentPage, result: action.payload }
         default:
             return state
     }
 }
 
 export const store = configureStore({
-    reducer: reducer,
+    reducer: reducer,   
     preloadedState: { result: { status: 'loading' }, currentPage: 1 }
 })
 

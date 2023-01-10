@@ -1,17 +1,21 @@
 import ListItem from '../ListItem'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { connect } from "react-redux/es/exports";
-import { useParams } from "react-router";
-import { v4 as uuidv4 } from 'uuid';
-import { Color } from '../../types'
+import { useNavigate, useParams } from "react-router";
 import { 
     AppState,
-    fetchData
+    fetchData,
+    fetchIdData 
 } from '../../store';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faXmark, 
+    faFaceDizzy,
+    faFaceGrimace,
+    faSpinner
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
     ListContainer,
@@ -19,9 +23,13 @@ import {
     ModalContainerBackground,
     ModalItemSpecifics,
     ModalCloseBtn,
-    ModalItemSpecificContainer
+    ModalItemSpecificContainer,
+    ErrorContainer,
+    LoadingContainer,
+    SpinnerContainer
 } from './style'
 import Pagination from '../Pagination';
+import { Link } from 'react-router-dom';
 
 type ModalContentProps = {
     id: number,
@@ -29,58 +37,128 @@ type ModalContentProps = {
     color: string,
     year: number,
     pantoneValue: string
+    handleClose: any
 }
 
 type ListProps = {
-    service: AppState
+    service: AppState,
 }
 
-const List = ({ service, updateData, currentPage }: any) => {
+const List = ({ service, updateData, filterData, updatePage, currentPage }: any) => {
+
+    const { colorId } = useParams<'colorId'>()
+    const { modalColorId } = useParams<'modalColorId'>()
+    const { pageId } = useParams<'pageId'>()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        updateData(currentPage)
+        if (colorId) {
+            filterData(Number(colorId))
+        } else {
+            if(pageId) {
+                updatePage(Number(pageId))
+                updateData(Number(pageId))
+            } else {
+                updateData(currentPage)
+            }
+        }
     }, [])
 
+    const handleListItemClick = (event: any): void => {
+        navigate(`/${pageId ? pageId : 1}/color/${event.target.dataset.colorId}`, { replace: true })
+    }
+
+    const handleCloseModal = (event: any): void => {
+        navigate(`/${pageId ? pageId : 1}`, { replace: true })
+    }
+
     return (
-        <ListContainer rows={service.status === 'loaded' ? service.payload.data.length : 6}>
-            {service.status === 'loading' && <div>Loading ...</div>}
-            {service.status === 'loaded' &&
+        <ListContainer rows={service.status === 'loaded' ? service.payload.data.length : 1}>
+            {service.status === 'loading' && <LoadingContainer>
+                <SpinnerContainer>
+                    <FontAwesomeIcon icon={faSpinner} />
+                </SpinnerContainer>
+                Loading
+            </LoadingContainer>}
+            {service.status === 'loaded' && 
                 service.payload.data.map((item: any) => (
                     <ListItem 
-                        key={uuidv4()}
+                        key={item.id}
                         id={item.id}
                         name={item.name}
                         year={item.year}
                         color={item.color}
+                        onClick={handleListItemClick}
                     />
                 ))
             }
-            {service.status === 'error' && <div>Error, backend moved to the dark side.</div>}
-            {/* {colorId && (
+            {service.status === 'error' && (
+                <ErrorContainer>
+                    <FontAwesomeIcon icon={faFaceDizzy} />
+                    Error, backend moved to the dark side.
+                    <Link style={{ color: 'white', fontSize: '.7rem'}} reloadDocument to="/">/ Go Home</Link>
+                </ErrorContainer>
+            )}
+            {service.status === 'errornotfound' && (
+                <ErrorContainer>
+                    <FontAwesomeIcon icon={faFaceGrimace} />
+                    We didn't found such id...
+                    <Link style={{ color: 'white', fontSize: '.7rem'}} reloadDocument to="/">/ Go Home</Link>
+                </ErrorContainer>
+            )}
+            {service.status === 'filtered' && (
+                        <ListItem 
+                            key={service.payload.data.id}
+                            id={service.payload.data.id}
+                            name={service.payload.data.name}
+                            year={service.payload.data.year}
+                            color={service.payload.data.color}
+                            onClick={handleListItemClick}
+                        />
+            )}
+            {service.status === 'loaded' && modalColorId && (
                 <>
-                    {data
-                        .filter(item => item.id === Number(colorId))
-                        .map(item => (
-                            <ModalContainer bgColor={item.color}>
+                    {service.payload.data
+                        .filter((item: any) => item.id === Number(modalColorId))
+                        .map((item: any) => (
+                            <ModalContainer key={item.id} bgColor={item.color}>
                                 <ModalContent
                                             id={item.id}
                                             name={item.name}
                                             year={item.year}
                                             color={item.color}
                                             pantoneValue={item.pantone_value} 
+                                            handleClose={handleCloseModal}
                                             />
                             </ModalContainer>
                         )
                     )}
                     <ModalContainerBackground/>
                 </>
-            )} */}
+            )}
+            {service.status === 'filtered' && modalColorId && (
+                <>
+                        (
+                            <ModalContainer key={service.payload.data.id} bgColor={service.payload.data.color}>
+                                <ModalContent
+                                            id={service.payload.data.id}
+                                            name={service.payload.data.name}
+                                            year={service.payload.data.year}
+                                            color={service.payload.data.color}
+                                            pantoneValue={service.payload.data.pantone_value} 
+                                            handleClose={handleCloseModal}
+                                            />
+                            </ModalContainer>
+                        )
+                    <ModalContainerBackground/>
+                </>
+            )}
             <Pagination />
         </ListContainer>
     )
 }
 
-const ModalContent = ({ id, name, color, year, pantoneValue }: ModalContentProps) => {
+const ModalContent = ({ id, name, color, year, pantoneValue, handleClose }: ModalContentProps) => {
     return (
         <>
             <ModalItemSpecifics>
@@ -100,7 +178,7 @@ const ModalContent = ({ id, name, color, year, pantoneValue }: ModalContentProps
                     pantone value: <span>{pantoneValue}</span>
                 </ModalItemSpecificContainer>
             </ModalItemSpecifics>
-            <ModalCloseBtn>
+            <ModalCloseBtn onClick={handleClose}>
                 <FontAwesomeIcon icon={faXmark} />
             </ModalCloseBtn>
         </>
@@ -113,7 +191,9 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-    updateData: (page: number) => fetchData(dispatch, page)
+    updatePage: (page: number) => dispatch({ type: 'UPDATE_CURR_PAGE', page }),
+    updateData: (page: number) => fetchData( dispatch, page ),
+    filterData: (colorId: number) => fetchIdData(dispatch, colorId)
 })
 
 export default connect(
